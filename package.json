@@ -1,6 +1,6 @@
 {
   "name": "akrn",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "akrn",
   "main": "lib/index.js",
   "scripts": {
@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "rn-core": "~0.2.0",
-    "react-timer-mixin": "0.13.3"
+    "react-timer-mixin": "0.13.3",
+    "keymirror": "^0.1.1"
   },
   "author": "qixuan",
   "license": "ISC",
