@@ -50,14 +50,17 @@ var Toast = React.createClass({
     var {
       isVisible,
     } = this.props;
-    if (this.state.isVisible ) {
+    if (this.state.isVisible) {
       var self = this;
-      this.state.duration != null && this.setTimeout(function(){
-        self.setState({
-          isVisible:false,
-          duration:null
-        })
-      },this.state.duration)
+      if (this.state.duration != null) {
+        clearInterval(this.timer);
+        this.timer = setTimeout(function () {
+          self.setState({
+            isVisible: false,
+            duration: null
+          })
+        }.bind(this), this.state.duration)
+      }
       return (
         <View style={styles.container}>
             <Overlay

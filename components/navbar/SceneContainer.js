@@ -15,7 +15,7 @@ var DA = require('../../lib/DA');
 var Modal = require('../Modal');
 var Toast = require('../Toast');
 var NavTip = require('../NavTip');
-
+var Alert = require('../Alert');
 var Container = React.createClass({
 	getInitialState: function() {
 		return {
@@ -107,6 +107,7 @@ var Container = React.createClass({
 	          {Nav}
 	          <NavTip ref='navTip' isVisible={false}  />
 	          <Toast ref="toast" isVisible={false} content=''></Toast>
+						<Alert ref='alert' isVisible={false} content=''/>
 	          <Modal ref={'modal'} {...this.state.modalProps} />
 	      </View>
 	    )

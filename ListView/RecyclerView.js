@@ -131,7 +131,7 @@ var AKCollectionViewAndroid = React.createClass({
 
         }.bind(this), e);
     },
-    onLongClick(sectionIndex, rowIndex, done){
+    onLongClick(sectionIndex, rowIndex, done){        
         if (this.props.onLongClick && this.props.onLongClick(sectionIndex, rowIndex, done)) {
             return;
         }else if (this.props.actionSheetConfig){
@@ -159,8 +159,7 @@ var AKCollectionViewAndroid = React.createClass({
             [
               {text: '取消'},
               {text: config.option, onPress: () => {
-
-                this.props.alertConfig.onPress(sectionIndex, rowIndex)
+                this.props.alertConfig.onPress(sectionIndex, rowIndex,done)
                 }
               }
             ]

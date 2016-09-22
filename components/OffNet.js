@@ -30,16 +30,17 @@ var ActionSheet = React.createClass({
         )
     },
     onPressCircle(){
-        this.props.onPressRefresh && this.props.onPressRefresh()
+        this.setState({moadlVisible:false})
+        this.props.onPress && this.props.onPress()
     },
     render() {
         var self = this;
         return (
             <RootModal style={styles.rootModal} visible={this.state.moadlVisible} >
             <View style = {styles.topSection}>
-                <TouchableWithoutFeedback onPress={this.onPressCircle}>
+                <TouchableWithoutFeedback underlayColor={'rgba(255,255,255,.3)'} activeOpacity={1} onPress={this.onPressCircle}>
                     <View>
-                        <View style={styles.iconCircle}><Iconfont style={styles.iconfont} iconfontConfig={{ color: '#00c7b2', bgColor: 'transparent', fontSize: 42, iconCode: '&#xe6a8;' }} /></View>
+                   <View style={styles.iconCircle}><Iconfont style={styles.iconfont} iconfontConfig={{ color: '#00c7b2', bgColor: 'transparent', fontSize: 42, iconCode: '&#xe6a8;' }} /></View>
                         <Text style={{fontSize:14}}>刷新试试</Text>
                     </View>
                 </TouchableWithoutFeedback>

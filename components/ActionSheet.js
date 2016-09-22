@@ -49,7 +49,7 @@ var ActionSheet = React.createClass({
             <RootModal onPressModal={this.props.onPressModal} style={styles.rootModal} visible={this.state.actionSheetVisible} >
             <View style = {styles.actionSheetContainer}>
                 <View style = {styles.itemView}>
-                    <Text style ={{ fontSize: 12, color: '#999' }}>
+                    <Text style ={{ fontSize: 16, color: '#999' }}>
                         {title}
                     </Text>
                 </View>

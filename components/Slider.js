@@ -171,14 +171,14 @@ var Slider = React.createClass({
     this.setState({
       value:value
     });
-    this.props.onValueChange(value);
+    this.props.onValueChange && this.props.onValueChange(value);
   },
   render: function() {
     let {style, onValueChange, onSlidingComplete, ...props} = this.props;
     props.style = [styles.slider, style];
     props.onValueChange = this._onValueChange;
     props.onChange = props.onValueChange;
-    props.onSlidingComplete = onSlidingComplete || ((event: Event) => {
+    props.onSlidingComplete = ((event: Event) => {
       onSlidingComplete && onSlidingComplete(event.nativeEvent.value);
     });
 

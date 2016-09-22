@@ -235,7 +235,7 @@ var styles = StyleSheet.create({
     textAlign:'center'
   },
   iconfont:{
-    width:20,height:20,
+    width:23,height:23,
   },
   navBtnCt:{
     flex:1,

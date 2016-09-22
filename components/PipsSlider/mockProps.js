@@ -22,24 +22,25 @@ var BasicMarker = React.createClass({
   },
   getInitialState: function() {
     return {
-      value:'' 
+      value:'',
+      disabled:this.props.disabled 
     };
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
-      value: nextProps.value
+      value: nextProps.value,
+      disabled:nextProps.disabled
     });
   },
   render: function () {
-
     return (
-      <View style={[this.props.markerStyle,]}>
+      <View style={this.props.markerStyle}>
           <View style={mockProps.markerTipTextStyle}>  
-            <Text style={{ color:'#00c7b2',fontSize:11}}>
+            <Text style={[{ color:'#00c7b2',fontSize:11},this.state.disabled && {color:'#c6c5c5'}]}>
             {this.state.value||this.props.value}
             </Text>
           </View>
-          <View style={[mockProps.markerTipStyle, this.props.pressed && this.props.pressedMarkerStyle]}></View>
+          <View style={[mockProps.markerTipStyle, this.props.pressed && this.props.pressedMarkerStyle,this.state.disabled && {backgroundColor:'#c6c5c5',borderWidth:3,borderColor:'#fff'}]}></View>
       </View>
     );
   }
@@ -47,12 +48,11 @@ var BasicMarker = React.createClass({
 
 var mockProps = {
   value: 0,
-
   onValueChangeStart: function () {
     console.log('press started');
   },
   onValueChange: function (values) {
-    console.log('changing', values);
+    // console.log('changing', values);
   },
   onValueChangeFinish: function (values) {
     console.log('changed', values);
@@ -67,7 +67,6 @@ var mockProps = {
   unselectedStyle: {
     backgroundColor: 'rgba(0,199,178,1)'
   },
-  
   trackStyle: {
     height:6,
     borderRadius: 3.5,
