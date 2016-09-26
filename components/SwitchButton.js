@@ -25,9 +25,9 @@ var SwitchButton =  React.createClass({
 	},
 	getInitialState:function(){
 		return{
-			switchText     : '开启',
+			switchText     : this.props.switchText || '关闭',
 			value          : this.props.value,
-			leftButtonText : this.props.leftButton && this.props.leftButton.onText
+			leftButtonText : this.props.leftButton && this.props.leftButton.offText
 		}
 	},
 	getDefaultProps:function(){
@@ -44,11 +44,11 @@ var SwitchButton =  React.createClass({
 		var value = !this.state.value;
 		if(this.state.value){
 			var switchText = '开启';
-			var leftButtonText = this.props.leftButton && this.props.leftButton.onText;
+			var leftButtonText = this.props.leftButton && this.props.leftButton.offText;
 		}
 		else{
 			var switchText = '关闭';
-			var leftButtonText = this.props.leftButton && this.props.leftButton.offText;
+			var leftButtonText = this.props.leftButton && this.props.leftButton.onText;
 		}
 		this.setState({
 			switchText     : switchText,
