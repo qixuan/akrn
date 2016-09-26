@@ -34,6 +34,11 @@ var SwitchItem = React.createClass({
 			disabled:false
 		};
 	},
+	componentWillReceiveProps:function(nextProps){
+		this.setState({
+			value:nextProps.value
+		})
+	},
 	getInitialState:function(){
 		return {
 			value:this.props.value
