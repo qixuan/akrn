@@ -9,7 +9,8 @@ import React, {
     ScrollView,
     Platform,
     TouchableHighlight,
-    Dimensions
+    Dimensions,
+    LayoutAnimation
 } from 'react-native';
 const RootModal = require('./rootModal/RootModal')
 
@@ -45,6 +46,7 @@ var ActionSheet = React.createClass({
     render() {
         const self = this;
         const {title, options} = this.props;
+        LayoutAnimation.easeInEaseOut()
         return (
             <RootModal onPressModal={this.props.onPressModal} style={styles.rootModal} visible={this.state.actionSheetVisible} >
             <View style = {styles.actionSheetContainer}>
@@ -74,11 +76,13 @@ var ActionSheetCell = React.createClass({
             <TouchableHighlight
             underlayColor = {'#ccc'}
             onPress = {(event) => this.props.onActionSheetPress(index)}>
-                <View style = {[styles.itemView,styles.cancelButton]}>
+            <View style = {styles.cancelButton}>
+                <View style = {styles.itemView}>
                     <Text style ={{ fontSize: 16, color: '#999' }}>
                         {data}
                     </Text>
                 </View>
+            </View>
             </TouchableHighlight>
             )
         }
@@ -118,8 +122,8 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     cancelButton : {
-        paddingTop : 8,
-        paddingBottom : 8
+        // paddingTop : 8,
+        // paddingBottom : 8
     },
     rootModal:{
         top: 0,

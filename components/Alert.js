@@ -13,7 +13,8 @@ var {
     StyleSheet,
     Dimensions,
     requireNativeComponent,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    LayoutAnimation
 } = React;
 const RootModal = require('./rootModal/RootModal')
 
@@ -21,7 +22,7 @@ var Overlay = require('./overlay');
 var window = Dimensions.get('window');
 var TimerMixin = require('react-timer-mixin');
 
-var Toast = React.createClass({
+var Alert = React.createClass({
     mixins: [TimerMixin],
     propTypes: {
         /**
@@ -78,7 +79,8 @@ var Toast = React.createClass({
                     isVisible: false,
                     duration: null
                 })
-            }, this.state.duration)
+            }, this.state.duraÎtion)
+            LayoutAnimation.easeInEaseOut()
             return (
                 <RootModal onPressModal = {this._onOverlayPress} style={styles.rootModal} visible={this.state.isVisible} >
                     <View style={styles.container}>
@@ -157,6 +159,7 @@ var styles = StyleSheet.create({
         marginBottom: 40,
     },
     contentTitle: {
+        textAlign: 'left',
         fontSize: 14,
         lineHeight: 20,
         color: '#666',
@@ -178,4 +181,4 @@ var styles = StyleSheet.create({
     }
 })
 
-module.exports = Toast;
+module.exports = Alert;

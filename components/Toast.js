@@ -17,9 +17,10 @@ var {
 var Overlay = require('./overlay');
 var window = Dimensions.get('window');
 var TimerMixin = require('react-timer-mixin');
+const RootModal = require('./rootModal/RootModal')
 
 var Toast = React.createClass({
-  mixins:[TimerMixin],
+  mixins: [TimerMixin],
   propTypes: {
     /**
      * Determines the visibility of the Overlay. When it is not visible,
@@ -33,17 +34,17 @@ var Toast = React.createClass({
       isVisible: false,
       overlayCanClose: true,
       content: '',
-      duration:null
+      duration: null
     }
   },
-  _onOverlayPress(){
-    if(this.state.overlayCanClose){
+  _onOverlayPress() {
+    if (this.state.overlayCanClose) {
       this.setState({
         isVisible: false,
         overlayCanClose: true,
         content: ''
       });
-    }  
+    }
   },
 
   render() {
@@ -62,17 +63,15 @@ var Toast = React.createClass({
         }.bind(this), this.state.duration)
       }
       return (
-        <View style={styles.container}>
-            <Overlay
-            pageX={0}
-            pageY={0}
-            overlayStyle={this.state.overlayStyle}
-            show={true}
-            onPress={ this._onOverlayPress }/>
+        <RootModal onPressModal={this.props.onPressModal} style={styles.rootModal} visible={this.state.isVisible} >
+
+          <View style={styles.container}>
             <View style={styles.main}>
               <Text style={styles.content}>{this.state.content}</Text>
             </View>
-        </View>
+          </View>
+        </RootModal>
+
       );
     } else {
       return null;
@@ -91,7 +90,7 @@ var styles = StyleSheet.create({
     height: window.height,
     backgroundColor: 'transparent'
   },
-  main:{
+  main: {
     height: 100,
     width: 260,
     top: window.height / 2 - 50,
@@ -106,11 +105,18 @@ var styles = StyleSheet.create({
     color: '#fff',
     fontWeight: "800",
     textAlign: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
     width: 260,
     fontSize: 14,
     lineHeight: 20,
     backgroundColor: 'transparent'
+  },
+  rootModal: {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)'
   }
 })
 

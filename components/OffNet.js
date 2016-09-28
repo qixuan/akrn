@@ -38,12 +38,14 @@ var ActionSheet = React.createClass({
         return (
             <RootModal style={styles.rootModal} visible={this.state.moadlVisible} >
             <View style = {styles.topSection}>
-                <TouchableWithoutFeedback underlayColor={'rgba(255,255,255,.3)'} activeOpacity={1} onPress={this.onPressCircle}>
+                 {
+                   this.props.onPress && <TouchableWithoutFeedback underlayColor={'rgba(255,255,255,.3)'} activeOpacity={1} onPress={this.onPressCircle}>
                     <View>
                    <View style={styles.iconCircle}><Iconfont style={styles.iconfont} iconfontConfig={{ color: '#00c7b2', bgColor: 'transparent', fontSize: 42, iconCode: '&#xe6a8;' }} /></View>
                         <Text style={{fontSize:14}}>刷新试试</Text>
                     </View>
                 </TouchableWithoutFeedback>
+                }
             </View>
             <View style = {styles.bottomSection}>
                 <View>
