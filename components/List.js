@@ -33,34 +33,7 @@ var List = React.createClass({
     return {
       onItemClick: (e) => { console.log("onItemClick", e) },
       onClickBefore: (e) => { console.log("onClickBefore", e) },
-      dataModel: {
-        "value": [1],
-        "disabled": [1, 3, 2],
-        "uiTitle": "常用模式",
-        "isMultiple": true,//多选,单选列表
-        "type": "ItemList", //ItemList RadioItemList CheckItemList
-        "map": [{
-          'name': '冰箱',
-          'subtitle': '冰冻',
-          'after': '卡普',
-          'rightIcon': '&#xe617;',
-          "value": 3,
-        }, {
-            'leftIcon': '&#xe686;',
-            'name': '扫地机',
-            'subtitle': '火热',
-            'after': '科沃斯',
-            'rightIcon': '&#xe617;',
-            "value": 5,
-          }, {
-            'leftIcon': '&#xe686;',
-            'name': '压力锅',
-            'subtitle': '闷热',
-            'after': '苏泊尔',
-            'rightIcon': '&#xe617;',
-            "value": 1,
-          }]
-      }
+      dataModel: {}
     }
   },
   getInitialState() {
