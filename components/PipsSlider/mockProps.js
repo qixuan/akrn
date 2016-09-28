@@ -36,7 +36,7 @@ var BasicMarker = React.createClass({
     return (
       <View style={this.props.markerStyle}>
           <View style={mockProps.markerTipTextStyle}>  
-            <Text style={[{ color:'#00c7b2',fontSize:11},this.state.disabled && {color:'#c6c5c5'}]}>
+            <Text style={[{ color:'#00c7b2',fontSize:15},this.state.disabled && {color:'#00c7b2'}]}>
             {this.state.value||this.props.value}
             </Text>
           </View>
@@ -68,7 +68,7 @@ var mockProps = {
     backgroundColor: 'rgba(0,199,178,1)'
   },
   trackStyle: {
-    height:6,
+    height:4,
     borderRadius: 3.5,
   },
   touchDimensions: {
@@ -87,8 +87,8 @@ var mockProps = {
     backgroundColor:'#009383',
   },
   markerTipStyle:{
-    height:30,
-    width: 30,
+    height:25,
+    width: 25,
     borderRadius: 15,
     backgroundColor:'#00c7b2',
     position:"absolute",

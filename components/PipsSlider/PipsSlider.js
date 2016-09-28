@@ -352,8 +352,8 @@ var styles = StyleSheet.create({
     position: 'absolute',
     top: 0, left: 0, right: 0, bottom: 0,
     flex: 1,
-    backgroundColor: '#c6c5c5',
-    height: 6,
+    backgroundColor: '#e4e4e4',
+    height: 4,
     borderRadius: 3,
   },
   tickCtInner: {
@@ -364,15 +364,15 @@ var styles = StyleSheet.create({
   },
   innerTrack: {
     top: 0, left: 0, right: 0, bottom: 0,
-    height: 6,
+    height: 4,
     borderRadius: 3,
-    backgroundColor: '#00c7b2',
+    backgroundColor: '#a7e4de',
     position: 'absolute'
   },
   tick: {
-    height: 6, width: 6,
+    height: 4, width: 4,
     borderRadius: 2.5,
-    backgroundColor: '#009383',
+    backgroundColor: '#00c7b2',
   },
   stepDescription: {
     // marginTop:30,
