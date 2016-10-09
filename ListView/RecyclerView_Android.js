@@ -95,15 +95,71 @@ var RecyclerView = React.createClass({
     },
     _renderRowsContent: function(sectionIdx,rowIdx, rowData){
         var content = this.props.renderRow(rowData, sectionIdx, rowIdx, this._onRowHighlighted);
+        var editConfig = content.props.editConfig || {};
         return (
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onLongPress={() => this._onLongPress(sectionIdx,rowIdx,editConfig)}>
                     <View>
                         {content}
                     </View>
                 </TouchableWithoutFeedback>
         );
     },
+    _onLongPress:function(sectionIdx,rowIdx,editConfig){
+        this.props.onLongClick(sectionIdx,rowIdx,editConfig, function(callback){
+            callback(dataSource)
+        });
+    },
+    _renderRowItem: function(cellData, rowData, sectionIdx, rowIdx){
+        var contentView = this._renderRowsContent(sectionIdx, rowIdx, rowData);
+        var content = this.props.renderRow(
+            rowData,
+            sectionIdx,
+            rowIdx,
+            this._onRowHighlighted
+        );
+        var rowGuid = this.props.rowGuid ? this.props.rowGuid(
+            rowData,
+            sectionIdx,
+            rowIdx,
+        ) : this._defaultRowGuid(rowData);
 
+        var self = this;
+
+
+        //  var onLongClickListener = function(event){}
+        // if(this.props.deleteRow){
+        var onLongClickListener = function(event){
+                var data = event.nativeEvent;
+                var sectionIdx = data.section;
+                var rowIdx = data.row;
+                var editConfig = content.props.editConfig || {};
+                self.props.onLongClick(sectionIdx, rowIdx, editConfig, function(callback){
+                    callback(dataSource)
+                })
+            }
+        // }
+
+
+        return <AKCell
+                    key = {rowGuid}
+                    indexPath = {{section: sectionIdx, item: rowIdx}}
+                    style = {{
+                        height: content.props.size ? content.props.size.height : this.props.layout.cellHeight,
+                        width: content.props.size ? content.props.size.width : this.props.layout.cellWidth
+                    }}
+                    content = {contentView}
+                    ref = {(row) => {
+                        if(row){
+                            PrivateMethods.captureReferenceFor(cellData, row);
+                        }
+                    }}
+                    onCellClick= {(event)=>{this._onClick(event)}}
+                    onCellLongClick= {(event)=>
+                        {onLongClickListener(event)}
+                    }
+                >
+                </AKCell>
+    },
     _renderRows: function(props) {
         console.log('RecyclerViewAndroid renderRow',this.props);
         if(this.props.dataSource == null || this.props.dataSource.length == 0){
@@ -116,55 +172,7 @@ var RecyclerView = React.createClass({
             var section = dataSource[sectionIdx];
             for (var rowIdx = 0; rowIdx < section.length; rowIdx++) {
                 var rowData = section[rowIdx];
-                var contentView = this._renderRowsContent(sectionIdx, rowIdx, rowData);
-                var content = this.props.renderRow(
-                    rowData,
-                    sectionIdx,
-                    rowIdx,
-                    this._onRowHighlighted
-                );
-                var rowGuid = this.props.rowGuid ? this.props.rowGuid(
-                    rowData,
-                    sectionIdx,
-                    rowIdx,
-                ) : this._defaultRowGuid(rowData);
-
-                var self = this;
-
-                 var onLongClickListener = function(event){}
-
-                if(this.props.deleteRow){
-                    onLongClickListener = function(event){ 
-                        var data = event.nativeEvent;
-                        var sectionIdx = data.section;
-                        var rowIdx = data.row;
-
-                        self.props.onLongClick(sectionIdx, rowIdx, function(callback){
-                            callback(dataSource)
-                        })
-                    }
-                }
-
-                var row =
-                        <AKCell
-                            key = {rowGuid}
-                            indexPath = {{section: sectionIdx, item: rowIdx}}
-                            style = {{
-                                height: content.props.size ? content.props.size.height : this.props.layout.cellHeight,
-                                width: content.props.size ? content.props.size.width : this.props.layout.cellWidth
-                            }}
-                            content = {contentView}
-                            ref = {(row) => {
-                                if(row){
-                                    PrivateMethods.captureReferenceFor(cellData, row);
-                                }
-                            }}
-                            onCellClick= {(event)=>{this._onClick(event)}}
-                            onCellLongClick= {(event)=>
-                                {onLongClickListener(event)}
-                            }
-                        >
-                        </AKCell>
+                var row = this._renderRowItem(cellData, rowData, sectionIdx, rowIdx)
                 rows.push(row);
             }
         }
@@ -245,8 +253,8 @@ RecyclerView.Cell = React.createClass({
     },
     componentWillMount() {
         this.viewProperties = {
-            width: 0, 
-            height: 0, 
+            width: 0,
+            height: 0,
         };
     },
 
@@ -271,7 +279,7 @@ RecyclerView.Cell = React.createClass({
 
     setVisibility(visibility) {
         if (this.state.visibility == visibility) {
-            return; 
+            return;
         }
 
         if (visibility == true) {
