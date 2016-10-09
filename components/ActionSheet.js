@@ -31,21 +31,30 @@ var ActionSheet = React.createClass({
     },
     getInitialState(){
         return{
+            title: '',
+            options: [],
+            config: {},
             actionSheetVisible:this.props.actionSheetVisible || false
         }
     },
-    
+
     onPress(index){
-        this.props.onPress(index,this.props.config);
+        var config = Object.assign(this.state.config, this.props.config);
+        this.props.onPress(index, config);
     },
     componentWillReceiveProps(nextProps){
         this.setState({
+            config: nextProps.config || {},
+            title: nextProps.title || '',
+            options: nextProps.options || [],
             actionSheetVisible:nextProps.actionSheetVisible
         })
     },
     render() {
         const self = this;
-        const {title, options} = this.props;
+        let {title, options} = this.state;
+        title = title ? title : this.props.title;
+        options = options ? options: this.props.options;
         LayoutAnimation.easeInEaseOut()
         return (
             <RootModal onPressModal={this.props.onPressModal} style={styles.rootModal} visible={this.state.actionSheetVisible} >
@@ -56,7 +65,7 @@ var ActionSheet = React.createClass({
                     </Text>
                 </View>
                 {
-                    this.props.options.map(function (data, index) {
+                    options.map(function (data, index) {
                         return self.renderRow(data, index)
                     })
                 }
@@ -88,7 +97,7 @@ var ActionSheetCell = React.createClass({
         }
         return(
         <TouchableHighlight
-        underlayColor = {'#ccc'}  
+        underlayColor = {'#ccc'}
         onPress = {(event) => this.props.onActionSheetPress(index)}>
             <View style = {styles.itemView}>
                 <Text style ={{ fontSize: 16, color: '#999' }}>

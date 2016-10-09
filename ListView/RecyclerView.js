@@ -17,6 +17,7 @@ const RecyclerView = require('./RecyclerView_Android');
 const ActionSheet = require('../components/ActionSheet')
 const SwipeRefresh = requireNativeComponent('SwipeRefresh');
 const SwipeRefreshRef = "SwipeRefresh_Tag";
+const NOOP = function(){};
 var AKCollectionViewAndroid = React.createClass({
     propTypes: {
         /**
@@ -105,7 +106,7 @@ var AKCollectionViewAndroid = React.createClass({
     },
     componentDidMount() {
     },
-    
+
     onRefresh: function(e){
         var self = this;
         this.props.onRefresh && this.props.onRefresh(function(){
@@ -131,50 +132,69 @@ var AKCollectionViewAndroid = React.createClass({
 
         }.bind(this), e);
     },
-    onLongClick(sectionIndex, rowIndex, done){        
-        if (this.props.onLongClick && this.props.onLongClick(sectionIndex, rowIndex, done)) {
-            return;
-        }else if (this.props.actionSheetConfig){
-            this.showActionSheet(sectionIndex, rowIndex, done);
+    onLongClick(sectionIndex, rowIndex, editConfig, done){
+        var editConfigOption = editConfig.options || null;
+        var androidUI = editConfig.androidUI;
+        var androidTitle = editConfig.androidTitle;
+        if(androidUI && androidTitle && editConfigOption){
+            if(androidUI == 'actionsheet'){
+                this.showActionSheet(sectionIndex, rowIndex, editConfig, done);
+            }else if(androidUI == 'alert'){
+                this.showAlert(sectionIndex, rowIndex, editConfig, done);
+            }
         }
-        else if(this.props.alertConfig){
-            this.showAlert(sectionIndex, rowIndex, done);            
-        }
-        this.setState({
-            sectionIndex:sectionIndex,
-            rowIndex:rowIndex
+    },
+    showActionSheet(sectionIndex, rowIndex, editConfig, done){
+        var options = [];
+        editConfig.options.forEach(function(item){
+            options.push(item.text);
         })
-
-    },
-    showActionSheet(sectionIndex, rowIndex, done){
-        this.setState({
+        this.refs['ActionSheet'].setState({
+            title: editConfig.androidTitle,
+            options: options,
+            config: Object.assign({sectionIndex, rowIndex}, editConfig),
             actionSheetVisible:true
-        })    
+        })
     },
-    showAlert(sectionIndex, rowIndex, done){
+    showAlert(sectionIndex, rowIndex, editConfig, done){
+        var options = [{text: '取消'}];
+        var self = this;
+        editConfig.options.forEach(function(config){
+            options.push({text: config.text, onPress: () => {
+                if(self.props.onEditAction){
+                    var dataSource = self.props.dataSource;
+                    self.props.onEditAction({
+                        sectionIndex, rowIndex, config, dataSource,
+                    }, NOOP);
+                }
+              }});
+        })
         var config = this.props.alertConfig;
           Alert.alert(
-            config.title,
-            config.text,
-            [
-              {text: '取消'},
-              {text: config.option, onPress: () => {
-                this.props.alertConfig.onPress(sectionIndex, rowIndex,done)
-                }
-              }
-            ]
+            editConfig.title,
+            editConfig.title,
+            options
         )
     },
-    onPressSheet(index,config){
-        this.setState({
+    onPressSheet(index,data){
+        this.refs['ActionSheet'].setState({
             actionSheetVisible:false
-        })
-        this.props.actionSheetConfig.onPress(index,config);
+        });
+        if(this.props.onEditAction){
+            var sectionIndex = data.sectionIndex,
+                rowIndex = data.rowIndex,
+                config = data.options[index],
+                dataSource = this.props.dataSource;
+            this.props.onEditAction({
+                sectionIndex, rowIndex, config, dataSource,
+            }, NOOP);
+        }
+        // this.props.actionSheetConfig.onPress(index,config);
     },
     renderRecycle: function(){
         return (
             <View style = {this.props.collectionViewStyle}>
-            <RecyclerView 
+            <RecyclerView
                 {...this.props}
                 rowGuid = {this.props.rowGuid}
                 renderRow = { this.props.renderRow }
@@ -188,25 +208,25 @@ var AKCollectionViewAndroid = React.createClass({
         );
     },
     onPressModal(){
-         this.setState({
+         this.refs['ActionSheet'].setState({
             actionSheetVisible:false
-        })       
+        })
     },
     renderActionSheet(){
-        
-        if(this.props.actionSheetConfig){
+        // if(this.props.actionSheetConfig){
            return (
             <ActionSheet
-                title = {this.props.actionSheetConfig.title}
-                options = {this.props.actionSheetConfig.options}
+                ref={'ActionSheet'}
+                title = {""}
+                options = {[]}
                 onPressModal = {this.onPressModal}
                 // cancelButtonIndex = {this.CANCEL_INDEX}
                 onPress = {this.onPressSheet}
                 actionSheetVisible={this.state.actionSheetVisible}
-                config={{sectionIndex:this.state.sectionIndex,rowIndex:this.state.rowIndex}}
+                config={{}}
                 />
             )
-        }
+        // }
     },
     render: function() {
         console.log('RecyclerView render', this.props.loaded);
@@ -216,10 +236,10 @@ var AKCollectionViewAndroid = React.createClass({
         if(this.props.onInfinite || this.props.onRefresh){
             // ToastAndroid.show("SwipeRefresh loaded", ToastAndroid.SHORT);
             return (
-                <SwipeRefresh 
+                <SwipeRefresh
                     ref = { SwipeRefreshRef }
                     style = { [this.props.refreshStyle,
-                  
+
                         {
                             flex: 1,
                             flexDirection: 'row',

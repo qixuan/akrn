@@ -206,7 +206,6 @@ var RecyclerView = React.createClass({
 
     _onClick: function(event) {
         var data = event.nativeEvent;
-        console.log('onClick', data);
         var selectedSection = data.section;
         var selectedIndex = data.row;
 
